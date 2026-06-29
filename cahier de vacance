@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+  <title data-id="th-modified">Calendrier 2k26</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json" >
+  <meta name="theme-color" content="#1E1B4B" >
+  <meta name="apple-mobile-web-app-capable" content="yes" >
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" >
+  <meta name="apple-mobile-web-app-title" content="Calendrier 2k26" >
+  <link rel="apple-touch-icon" href="icon-192.svg" >
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    :root {
+      --indigo: #4338CA;
+      --indigo-dark: #1E1B4B;
+      --indigo-light: #EEF2FF;
+      --radius: 14px;
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    body {
+      font-family: -apple-system, 'SF Pro Display', 'Segoe UI', sans-serif;
+      background: #F1F5F9;
+      color: #1E293B;
+      min-height: 100dvh;
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: linear-gradient(160deg, #1E1B4B 0%, #3730A3 60%, #4338CA 100%);
+      color: white;
+      padding: 56px 20px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+    }
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: -30px; left: -20px;
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+    .app-label {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      opacity: 0.6;
+      margin-bottom: 4px;
+    }
+    .app-title {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      margin-bottom: 2px;
+    }
+    .app-sub {
+      font-size: 13px;
+      opacity: 0.65;
+      margin-bottom: 18px;
+    }
+    .progress-wrap { margin-bottom: 6px; }
+    .progress-bar-bg {
+      background: rgba(255,255,255,0.18);
+      border-radius: 99px;
+      height: 7px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      background: linear-gradient(90deg, #A5F3FC, #60A5FA);
+      border-radius: 99px;
+      height: 7px;
+      transition: width 0.5s cubic-bezier(.4,0,.2,1);
+    }
+    .progress-label {
+      font-size: 11px;
+      opacity: 0.65;
+      margin-top: 5px;
+    }
+
+    /* ── WEEK TABS ── */
+    .tabs-wrap {
+      background: white;
+      border-bottom: 1px solid #E2E8F0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .tabs-wrap::-webkit-scrollbar { display: none; }
+    .tabs {
+      display: flex;
+      padding: 0 8px;
+      min-width: max-content;
+    }
+    .tab {
+      border: none;
+      background: none;
+      padding: 10px 14px 8px;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1px;
+      color: #94A3B8;
+      position: relative;
+    }
+    .tab.active { color: var(--week-color); border-bottom-color: var(--week-color); }
+    .tab-emoji { font-size: 18px; }
+    .tab-num { font-size: 12px; font-weight: 700; }
+    .tab-progress { font-size: 10px; opacity: 0.7; }
+
+    /* ── WEEK BANNER ── */
+    .week-banner {
+      margin: 16px 16px 12px;
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      border: 1.5px solid transparent;
+    }
+    .week-eyebrow {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 4px;
+    }
+    .week-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #0F172A;
+    }
+
+    /* ── DAYS ── */
+    .days-list {
+      padding: 0 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-bottom: calc(90px + var(--safe-bottom));
+    }
+
+    .day-card {
+      background: white;
+      border-radius: var(--radius);
+      border: 1.5px solid #E2E8F0;
+      overflow: hidden;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .day-card.done { opacity: 0.65; }
+    .day-card.open { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+
+    .day-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .checkbox {
+      width: 24px; height: 24px;
+      border-radius: 7px;
+      border: 2px solid #CBD5E1;
+      background: white;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 13px;
+      font-weight: 900;
+      color: white;
+    }
+    .checkbox.checked { border: none; }
+
+    .day-info { flex: 1; min-width: 0; }
+    .day-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0F172A;
+      margin-bottom: 2px;
+    }
+    .day-label.done-text { text-decoration: line-through; color: #94A3B8; }
+    .day-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 99px;
+      color: white;
+      margin-bottom: 3px;
+    }
+    .day-lecon {
+      font-size: 11.5px;
+      color: #64748B;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .chevron {
+      color: #CBD5E1;
+      font-size: 14px;
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+    .chevron.open { transform: rotate(180deg); color: #6366F1; }
+
+    /* ── DAY DETAIL ── */
+    .day-detail {
+      border-top: 1px solid #F1F5F9;
+      padding: 16px;
+      display: none;
+    }
+    .day-detail.open { display: block; }
+
+    .detail-section { margin-bottom: 14px; }
+    .detail-label {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 8px;
+    }
+    .detail-box {
+      background: white;
+      border-radius: 10px;
+      padding: 12px 14px;
+      border: 1px solid #F1F5F9;
+      font-size: 13px;
+      color: #374151;
+      line-height: 1.65;
+    }
+    .exo-row {
+      padding: 5px 0;
+      border-bottom: 1px solid #F8FAFC;
+      font-size: 13px;
+      color: #1E293B;
+      line-height: 1.5;
+    }
+    .exo-row:last-child { border: none; }
+    .exo-arrow { color: #6366F1; font-weight: 700; margin-right: 4px; }
+
+    .tip-box {
+      background: #FFFBEB;
+      border: 1.5px solid #FDE68A;
+      border-radius: 10px;
+      padding: 11px 14px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+    .tip-icon { font-size: 16px; flex-shrink: 0; }
+    .tip-text { font-size: 12.5px; color: #92400E; line-height: 1.6; }
+
+    .done-btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    /* ── BOTTOM NAV ── */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0; right: 0;
+      background: white;
+      border-top: 1px solid #E2E8F0;
+      display: flex;
+      padding: 10px 20px;
+      padding-bottom: calc(10px + var(--safe-bottom));
+      gap: 10px;
+      z-index: 100;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
+    }
+    .nav-btn {
+      flex: 1;
+      padding: 11px;
+      border-radius: 10px;
+      border: 1.5px solid #E2E8F0;
+      background: white;
+      font-size: 13px;
+      font-weight: 700;
+      color: #374151;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .nav-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+    .nav-btn.next {
+      background: var(--week-color, #4338CA);
+      color: white;
+      border: none;
+    }
+
+    /* ── INSTALL BANNER ── */
+    .install-banner {
+      margin: 12px 16px 0;
+      background: linear-gradient(135deg, #1E1B4B, #4338CA);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: white;
+    }
+    .install-icon { font-size: 28px; }
+    .install-text { flex: 1; }
+    .install-title { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+    .install-sub { font-size: 11px; opacity: 0.75; }
+    .install-close {
+      background: none; border: none; color: white; opacity: 0.6;
+      font-size: 18px; cursor: pointer; padding: 4px;
+    }
+
+    /* Animations */
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .day-detail.open { animation: slideDown 0.2s ease; }
+
+    /* Confetti effect */
+    @keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.15)} 100%{transform:scale(1)} }
+    .checkbox.pop { animation: pop 0.3s ease; }
+  </style>
+<meta property="og:title" content="Calendrier 2k26" data-id="th-modified" ><meta name="description" content="Calendrier2k26_1" data-id="th-modified" ><meta property="og:description" content="Calendrier2k26_1" data-id="th-modified" ><meta property="og:image" content="https://tiiny.host/assets/logo-purple-bg.png" data-id="th-modified" ><meta property="og:image:width" content="1501" data-id="th-modified" ><meta property="og:image:height" content="1501" data-id="th-modified" ><meta property="og:image:type" content="image/png" data-id="th-modified" ><meta property="og:url" content="https://brown-andree-75.tiiny.site/" data-id="th-modified" ><meta property="og:type" content="website" data-id="th-modified" ><script defer data-domain="brown-andree-75.tiiny.site" src="https://analytics.tiiny.site/js/plausible.js"></script><script type="text/javascript" src="https://tiiny.host/ad-script.js"></script></head>
+<body>
+
+<div id="app">
+  <!-- Header -->
+  <div class="header">
+    <div class="app-label">📚 Révisions Été 2026</div>
+    <div class="app-title">Calendrier 2k26</div>
+    <div class="app-sub">Français 4e → 3e · 8 semaines · 40 jours</div>
+    <div class="progress-wrap">
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+      </div>
+      <div class="progress-label" id="progressLabel">0 / 40 journées terminées</div>
+    </div>
+  </div>
+
+  <!-- Install banner -->
+  <div class="install-banner" id="installBanner" style="display:none">
+    <div class="install-icon">📲</div>
+    <div class="install-text">
+      <div class="install-title">Ajouter à l'écran d'accueil</div>
+      <div class="install-sub">iOS : bouton Partager → "Sur l'écran d'accueil"</div>
+    </div>
+    <button class="install-close" onclick="document.getElementById('installBanner').style.display='none'">✕</button>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs-wrap">
+    <div class="tabs" id="tabs"></div>
+  </div>
+
+  <!-- Week banner -->
+  <div class="week-banner" id="weekBanner"></div>
+
+  <!-- Days -->
+  <div class="days-list" id="daysList"></div>
+
+  <!-- Bottom nav -->
+  <div class="bottom-nav">
+    <button class="nav-btn" id="btnPrev" onclick="changeWeek(-1)">← Préc.</button>
+    <button class="nav-btn next" id="btnNext" onclick="changeWeek(1)">Suiv. →</button>
+  </div>
+</div>
+
+<script>
+const WEEKS = [
+  {
+    num:1, theme:"Les bases de la phrase", color:"#4F46E5", light:"#EEF2FF", emoji:"📖",
+    days:[
+      { label:"Lun 29 juin", lecon:"Grammaire 1 : Les classes grammaticales",
+        detail:"Lis p. 10–11 : les 9 classes de mots (nom, verbe, adjectif, déterminant, pronom, adverbe, préposition, conjonction, interjection). Mémorise les encadrés ★ À RETENIR.",
+        exercices:["Exercice Grammaire n°1 — Classes grammaticales","Exercice Grammaire n°2 — Variable ou invariable ?"],
+        tip:"Lis la leçon lentement, à voix haute si tu peux, avant de faire les exercices.", type:"lecon" },
+      { label:"Mar 30 juin", lecon:"Grammaire 2 : Les fonctions dans la phrase",
+        detail:"Lis p. 12–13 : sujet, verbe, COD, COI, CC, attribut du sujet. Mémorise les questions qui permettent de trouver chaque fonction (« Qui est-ce qui ? », « Quoi ? »…).",
+        exercices:["Exercice Grammaire n°3 — Déterminant ou pronom ?","Exercice Grammaire n°4 — Trouver le sujet"],
+        tip:"Pour trouver le sujet, pose toujours la question « Qui est-ce qui… ? » avant le verbe.", type:"lecon" },
+      { label:"Mer 1er juil.", lecon:"Révision + Exercices Grammaire",
+        detail:"Relis tes encadrés ★ À RETENIR des deux premières leçons. Vérifie que tu sais citer les 9 classes sans regarder. Puis fais les exercices.",
+        exercices:["Exercice Grammaire n°5 — COD, COI ou CC ?","Exercice Grammaire n°6 — COD ou attribut du sujet ?"],
+        tip:"Corrige en vert pour repérer tes erreurs. Chaque erreur corrigée = un progrès !", type:"exo" },
+      { label:"Jeu 2 juil.", lecon:"Conjugaison 1 : Le présent de l'indicatif",
+        detail:"Lis p. 32–33 : terminaisons des 3 groupes au présent, verbes irréguliers (être, avoir, aller, faire, pouvoir, vouloir, venir…). Conjugue 5 verbes au brouillon.",
+        exercices:["Exercice Conjugaison n°1 — Présent, 1er groupe","Exercice Conjugaison n°2 — Présent, 2e et 3e groupes"],
+        tip:"Les verbes du 3e groupe sont irréguliers : apprends-les par cœur un par un.", type:"lecon" },
+      { label:"Ven 3 juil.", lecon:"Dictée 1 + Conjugaison (suite)",
+        detail:"Fais-toi dicter la Dictée 1 (p. 94 — « La rentrée approche »). Lis-la d'abord pour repérer les difficultés, puis fais-la dicter. Corrige-toi ensuite avec les corrigés.",
+        exercices:["Exercice Conjugaison n°3 — Présent : être, avoir, aller","Exercice Conjugaison n°4 — Corrige les erreurs de présent","Dictée 1 — « La rentrée approche » (p. 94)"],
+        tip:"Après la dictée, liste tes erreurs dans un carnet. Reviens les relire la semaine suivante.", type:"dictee" },
+    ]
+  },
+  {
+    num:2, theme:"Enrichir et construire", color:"#0891B2", light:"#ECFEFF", emoji:"🏗️",
+    days:[
+      { label:"Lun 6 juil.", lecon:"Grammaire 3 : Groupes de mots et expansions du nom",
+        detail:"Lis p. 14–15 : le groupe nominal, l'épithète, l'apposition, la proposition relative et le complément du nom. Pour chaque expansion, trouve un exemple personnel.",
+        exercices:["Exercice Grammaire n°7 — Les expansions du nom","Exercice Grammaire n°8 — Enrichir un nom"],
+        tip:"Une expansion enrichit un nom : elle peut toujours être supprimée sans casser la phrase.", type:"lecon" },
+      { label:"Mar 7 juil.", lecon:"Grammaire 4 : Phrase simple et phrase complexe",
+        detail:"Lis p. 16–17 : définition de la proposition, reconnaître une phrase simple (1 verbe conjugué) vs complexe (plusieurs verbes conjugués). Juxtaposition, coordination, subordination.",
+        exercices:["Exercice Grammaire n°9 — Simple ou complexe ?","Exercice Grammaire n°10 — Juxtaposition, coordination, subordination"],
+        tip:"Astuce : compte les verbes conjugués. Autant de verbes = autant de propositions.", type:"lecon" },
+      { label:"Mer 8 juil.", lecon:"Conjugaison 2 : L'imparfait",
+        detail:"Lis p. 34 : terminaisons de l'imparfait (-ais, -ais, -ait, -ions, -iez, -aient). Attention au double « i » avec les verbes en -ier et -yer (nous étudii-ons).",
+        exercices:["Exercice Conjugaison n°5 — Imparfait","Exercice Conjugaison n°6 — Le double « i »","Exercice Conjugaison n°7 — Texte à l'imparfait"],
+        tip:"L'imparfait décrit une situation ou une action répétée dans le passé (habitude, description).", type:"lecon" },
+      { label:"Jeu 9 juil.", lecon:"Exercices de grammaire (subordonnées)",
+        detail:"Séance d'entraînement sur les expansions et la phrase complexe. Prends le temps d'analyser chaque phrase avant de répondre. Comprends pourquoi, pas juste « par instinct ».",
+        exercices:["Exercice Grammaire n°11 — Reconnaître les subordonnées","Exercice Grammaire n°12 — Les deux « que »"],
+        tip:"Le « que » peut être pronom relatif (remplace un nom) ou conjonction de subordination (introduit une complétive).", type:"exo" },
+      { label:"Ven 10 juil.", lecon:"Lecture 1 + Dictée 2",
+        detail:"Lis le Texte n°1 — « Le premier jour » (p. 136). Réponds aux questions de compréhension. Puis fais-toi dicter la Dictée 2.",
+        exercices:["Exercice Conjugaison n°8 — Passé simple, 3e personne","Lecture 1 — « Le premier jour » (p. 136)","Dictée 2 — « Le marché du village » (p. 95)"],
+        tip:"Pour la lecture : lis le texte deux fois avant de répondre aux questions. La 2e lecture éclaire tout.", type:"lecture" },
+    ]
+  },
+  {
+    num:3, theme:"Subordonnées et récit au passé", color:"#059669", light:"#ECFDF5", emoji:"📜",
+    days:[
+      { label:"Lun 13 juil.", lecon:"Grammaire 5 : Les propositions subordonnées",
+        detail:"Lis p. 18–19 : subordonnées relatives (qui, que, dont, où) et subordonnées conjonctives complétives (que) et circonstancielles (quand, parce que, si, bien que…).",
+        exercices:["Exercice Grammaire n°13 — Pronoms relatifs","Exercice Grammaire n°14 — Subordonnées circonstancielles"],
+        tip:"La relative complète un nom. La conjonctive complète un verbe. Demande-toi toujours ce que la subordonnée complète.", type:"lecon" },
+      { label:"Mar 14 juil.", lecon:"🎆 Fête nationale — Journée légère",
+        detail:"Leçon courte : Grammaire 6 — Coordination et juxtaposition (p. 20–21). 20 minutes max aujourd'hui. Tu mérites de profiter du 14 juillet !",
+        exercices:["Exercice Grammaire n°15 — Construire une phrase complexe"],
+        tip:"Bonne fête nationale ! Un seul exercice aujourd'hui, c'est exprès 🎆", type:"repos" },
+      { label:"Mer 15 juil.", lecon:"Conjugaison 3 : Le passé simple",
+        detail:"Lis p. 35 : terminaisons du passé simple pour les 3 groupes. Attention aux irréguliers (venir → vint, faire → fit, être → fut). Conjugue 5 verbes au brouillon.",
+        exercices:["Exercice Conjugaison n°9 — Les quatre familles","Exercice Conjugaison n°10 — Imparfait ou passé simple ?"],
+        tip:"Passé simple = action précise et ponctuelle dans un récit écrit. Imparfait = description ou durée.", type:"lecon" },
+      { label:"Jeu 16 juil.", lecon:"Conjugaison 4 : Le plus-que-parfait",
+        detail:"Lis p. 36 : formation avec avoir/être à l'imparfait + participe passé. Idée clé : l'antériorité (une action passée AVANT une autre action passée dans le récit).",
+        exercices:["Exercice Conjugaison n°11 — Plus-que-parfait","Exercice Conjugaison n°12 — Antériorité"],
+        tip:"« Il avait mangé avant de sortir » → avait mangé (plus-que-parfait) = action la plus ancienne.", type:"lecon" },
+      { label:"Ven 17 juil.", lecon:"Rédaction 1 + Dictée 3",
+        detail:"Rédaction n°1 (p. 115) : lis le sujet, écris un brouillon, puis une version propre. Relis-toi 2 fois. Puis fais la Dictée 3.",
+        exercices:["Exercice Grammaire n°16 — Les types de phrases","Rédaction 1 (sujet p. 115)","Dictée 3 — « Le vieux jardin » (p. 96)"],
+        tip:"Rédaction : introduction → développement (3 idées) → conclusion. Relis une fois pour le sens, une fois pour l'orthographe.", type:"redac" },
+    ]
+  },
+  {
+    num:4, theme:"Types de phrases et futur", color:"#D97706", light:"#FFFBEB", emoji:"⏩",
+    days:[
+      { label:"Lun 20 juil.", lecon:"Grammaire 7 : Types et formes de phrases",
+        detail:"Lis p. 22–23 : les 4 types (déclaratif, interrogatif, exclamatif, injonctif) et les formes (affirmative/négative, active/passive, emphatique/neutre, personnelle/impersonnelle).",
+        exercices:["Exercice Grammaire n°17 — Transformer le type","Exercice Grammaire n°18 — Forme affirmative / négative"],
+        tip:"Type = intention de la phrase. Forme = sa construction. Les deux sont indépendants et cumulables.", type:"lecon" },
+      { label:"Mar 21 juil.", lecon:"Conjugaison 5 : Le futur simple",
+        detail:"Lis p. 37 : terminaisons du futur (-rai, -ras, -ra, -rons, -rez, -ront). Irréguliers : être → serai, avoir → aurai, aller → irai, faire → ferai, pouvoir → pourrai, vouloir → voudrai.",
+        exercices:["Exercice Conjugaison n°13 — Futur simple","Exercice Conjugaison n°14 — Futurs irréguliers"],
+        tip:"Le futur se reconnaît à la consonne -r- juste avant les terminaisons : je chanter-ai.", type:"lecon" },
+      { label:"Mer 22 juil.", lecon:"Conjugaison 6 : Le conditionnel",
+        detail:"Lis p. 38 : conditionnel = radical du futur + terminaisons de l'imparfait. Emploi : condition avec « si » + imparfait → conditionnel dans la principale.",
+        exercices:["Exercice Conjugaison n°15 — Futur dans un texte","Exercice Conjugaison n°16 — Conditionnel présent","Exercice Conjugaison n°17 — Futur ou conditionnel ?"],
+        tip:"⚠️ JAMAIS « si » + conditionnel. Toujours : si + imparfait → conditionnel dans l'autre partie.", type:"lecon" },
+      { label:"Jeu 23 juil.", lecon:"Entraînement : formes de phrases",
+        detail:"Séance de révision sur les types et formes de phrases. Pour chaque exercice, indique toujours le type ET la(les) forme(s) : une phrase peut être déclarative ET passive ET emphatique.",
+        exercices:["Exercice Grammaire n°19 — Actif / passif","Exercice Grammaire n°20 — Passif → actif","Exercice Conjugaison n°18 — Corrige le « si »"],
+        tip:"Passif : COD → sujet + être conjugué + participe passé accordé avec le nouveau sujet.", type:"exo" },
+      { label:"Ven 24 juil.", lecon:"Lecture 2 + Dictée 4",
+        detail:"Lis le Texte n°2 — « La porte au fond du couloir » (p. 166). Réponds aux questions. Puis fais la Dictée 4.",
+        exercices:["Exercice Grammaire n°21 — Mise en relief","Lecture 2 — « La porte au fond du couloir » (p. 166)","Dictée 4 — « L'orage en montagne » (p. 97)"],
+        tip:"La mise en relief (emphase) : « C'est lui qui… » ou « C'est lui que… » permet d'insister sur un élément.", type:"lecture" },
+    ]
+  },
+  {
+    num:5, theme:"Orthographe et modes", color:"#7C3AED", light:"#F5F3FF", emoji:"✏️",
+    days:[
+      { label:"Lun 27 juil.", lecon:"Orthographe 1 : L'accord sujet/verbe",
+        detail:"Lis p. 50 : le verbe s'accorde TOUJOURS avec son sujet. Cas délicats : sujet inversé, sujet éloigné du verbe, « on », « qui », sujets multiples (accord au pluriel).",
+        exercices:["Exercice Orthographe n°1 — Accord sujet/verbe","Exercice Orthographe n°2 — Le sujet « on »"],
+        tip:"Cherche toujours le sujet réel du verbe en posant « Qui est-ce qui + verbe ? »", type:"lecon" },
+      { label:"Mar 28 juil.", lecon:"Orthographe 2 & 3 : Accords dans le GN et participe passé",
+        detail:"Lis p. 51–52 : accord de l'adjectif (épithète et attribut) dans le groupe nominal. Puis les 3 règles du participe passé avec être (accord avec le sujet) et avec avoir (accord avec le COD si avant).",
+        exercices:["Exercice Orthographe n°3 — Accord dans le GN","Exercice Conjugaison n°21 — « Il faut que » (subjonctif)"],
+        tip:"Avec avoir : le participe s'accorde avec le COD UNIQUEMENT si le COD est PLACÉ AVANT le verbe.", type:"lecon" },
+      { label:"Mer 29 juil.", lecon:"Conjugaison 7 & 8 : Subjonctif et Impératif",
+        detail:"Lis p. 39–40 : subjonctif présent (que je sois, que tu aies, qu'il fasse, que nous allions…). Impératif présent : sans sujet, et attention au « s » final des verbes du 1er groupe (mange ≠ manges).",
+        exercices:["Exercice Conjugaison n°19 — Subjonctif présent","Exercice Conjugaison n°20 — Indicatif ou subjonctif ?","Exercice Conjugaison n°22 — Impératif présent"],
+        tip:"Subjonctif après : vouloir que, falloir que, bien que, pour que, avant que, afin que…", type:"lecon" },
+      { label:"Jeu 30 juil.", lecon:"Entraînement accords et modes",
+        detail:"Séance de consolidation. Reprends les règles d'accord et les modes vus cette semaine. Si une notion n'est pas claire, relis la leçon avant de faire l'exercice.",
+        exercices:["Exercice Conjugaison n°23 — Le « s » de l'impératif","Exercice Conjugaison n°24 — Ordre et conseil","Exercice Orthographe n°4 — a / à"],
+        tip:"Pour a/à : remplace par « avait ». Si ça marche → verbe avoir (a). Sinon → préposition (à).", type:"exo" },
+      { label:"Ven 31 juil.", lecon:"Rédaction 2 + Dictée 5",
+        detail:"Rédaction n°2 (p. 116) : prends au moins 20 minutes. Écris un brouillon, puis recopie proprement. Relecture en deux passes : sens puis orthographe. Ensuite, Dictée 5.",
+        exercices:["Exercice Orthographe n°5 — et / est","Rédaction 2 (sujet p. 116)","Dictée 5 — « Une journée à la mer » (p. 98)"],
+        tip:"Avant de « rendre » ta rédaction, lis-la à voix haute : les maladresses se repèrent mieux ainsi.", type:"redac" },
+    ]
+  },
+  {
+    num:6, theme:"Orthographe suite et participe passé", color:"#DC2626", light:"#FEF2F2", emoji:"🔍",
+    days:[
+      { label:"Lun 3 août", lecon:"Orthographe 4 : Les homophones grammaticaux",
+        detail:"Lis p. 53–54 : a/à, et/est, son/sont, on/ont, ce/se, ces/ses, c'est/s'est, ou/où, la/là/l'a, leur/leurs, quel/quelle/qu'elle. Pour chaque paire, note un mot de remplacement test.",
+        exercices:["Exercice Orthographe n°6 — son / sont","Exercice Orthographe n°7 — on / ont","Exercice Orthographe n°8 — ce / se"],
+        tip:"Pour chaque homophone, trouve un mot de remplacement qui révèle lequel utiliser (ex : son → leur).", type:"lecon" },
+      { label:"Mar 4 août", lecon:"Orthographe 5 & 6 : Ponctuation et pluriels",
+        detail:"Lis p. 55–57 : rôle de chaque signe de ponctuation (virgule, point-virgule, deux-points, tiret…). Pluriels en -al/-aux, en -ou/-oux, en -eau/-eaux. Noms composés.",
+        exercices:["Exercice Orthographe n°9 — ces / ses","Exercice Orthographe n°10 — c'est / s'est","Exercice Orthographe n°11 — ou / où"],
+        tip:"7 mots en -ou font leur pluriel en -oux : bijou, caillou, chou, genou, hibou, joujou, pou.", type:"lecon" },
+      { label:"Mer 5 août", lecon:"Conjugaison 9 : Le participe passé et son accord",
+        detail:"Lis p. 41–42 : les 3 règles. (1) Avec être → accord avec le sujet. (2) Avec avoir → accord avec le COD si placé avant. (3) Employé seul (adjectif) → accord avec le nom qu'il qualifie.",
+        exercices:["Exercice Conjugaison n°25 — Former le participe passé","Exercice Conjugaison n°26 — Accord avec « être »","Exercice Conjugaison n°27 — Accord avec « avoir »"],
+        tip:"Avec avoir : demande « Qu'est-ce qu'il a + verbe ? » pour trouver le COD et vérifier s'il est avant ou après.", type:"lecon" },
+      { label:"Jeu 6 août", lecon:"Entraînement homophones + participe passé",
+        detail:"Séance de consolidation sur les homophones et les accords du participe passé. Ces deux notions tombent souvent au brevet. Prends le temps de bien les maîtriser.",
+        exercices:["Exercice Orthographe n°12 — la / là / l'a","Exercice Orthographe n°13 — leur / leurs","Exercice Conjugaison n°28 — Participe passé employé seul"],
+        tip:"Refais un exercice déjà corrigé sans regarder les réponses : c'est le meilleur test de mémorisation.", type:"exo" },
+      { label:"Ven 7 août", lecon:"Lecture 3 + Dictée 6",
+        detail:"Lis le Texte n°3 — « L'aube sur l'étang » (p. 213). Réponds aux questions. Puis fais la Dictée 6 — la dernière de la première moitié de l'été !",
+        exercices:["Exercice Orthographe n°14 — quel / quelle / qu'elle","Lecture 3 — « L'aube sur l'étang » (p. 213)","Dictée 6 — « La lettre mystérieuse » (p. 99)"],
+        tip:"Dans la dictée, relis-toi mot à mot à la fin : ne passe pas un seul mot sans l'avoir vérifié.", type:"lecture" },
+    ]
+  },
+  {
+    num:7, theme:"Vocabulaire et figures de style", color:"#0D9488", light:"#F0FDFA", emoji:"🌟",
+    days:[
+      { label:"Lun 10 août", lecon:"Vocabulaire 1 & 2 : Préfixes, suffixes, synonymes, antonymes",
+        detail:"Lis p. 63–66 : principaux préfixes (anti-, pré-, re-, dé-, con-, trans-…) et suffixes (-tion, -eur, -ment, -ité, -isme…). Synonymes (même sens), antonymes (sens contraire), familles de mots.",
+        exercices:["Exercice Vocabulaire n°1 — Repérer préfixe et suffixe","Exercice Vocabulaire n°2 — Le sens des préfixes","Exercice Vocabulaire n°3 — Former des mots avec « in- »"],
+        tip:"Connaître les préfixes et suffixes permet de comprendre un mot inconnu sans dictionnaire.", type:"lecon" },
+      { label:"Mar 11 août", lecon:"Vocabulaire 3, 4 & 5 : Champ lexical, niveaux, sens",
+        detail:"Lis p. 67–69 : champ lexical (ensemble de mots liés à un thème), les 3 niveaux de langue (familier / courant / soutenu), sens propre (concret) vs sens figuré (image).",
+        exercices:["Exercice Vocabulaire n°4 — Suffixes de métiers","Exercice Vocabulaire n°5 — Synonymes","Exercice Vocabulaire n°6 — Nuancer un synonyme"],
+        tip:"Les synonymes ne sont jamais totalement interchangeables : chacun a une nuance de sens ou de registre.", type:"lecon" },
+      { label:"Mer 12 août", lecon:"Littérature 1 : Les figures de style",
+        detail:"Lis p. 74–75 : comparaison, métaphore, personnification, hyperbole, antithèse, gradation, répétition, anaphore, ellipse, euphémisme, allitération, assonance. Pour chaque figure, retiens un exemple.",
+        exercices:["Exercice Vocabulaire n°7 — Antonymes","Exercice Vocabulaire n°8 — Antonymes par préfixe","Exercice Vocabulaire n°9 — Familles de mots"],
+        tip:"Comparaison = avec outil (comme, tel, ainsi que). Métaphore = SANS outil. C'est la seule différence.", type:"lecon" },
+      { label:"Jeu 13 août", lecon:"Littérature 2 : Les registres littéraires",
+        detail:"Lis p. 76 : registres comique, tragique, lyrique, épique, fantastique, réaliste, pathétique, ironique. Pour chacun : 2 caractéristiques + 1 exemple d'œuvre ou d'auteur.",
+        exercices:["Exercice Vocabulaire n°10 — Intrus dans la famille","Exercice Conjugaison n°29 — Révision tous temps"],
+        tip:"Un texte peut mêler plusieurs registres : cherche celui qui domine l'ensemble du passage.", type:"lecon" },
+      { label:"Ven 14 août", lecon:"Rédaction 3 + Lecture 4 + Dictée 7",
+        detail:"Rédaction n°3 (p. 117). Puis Lecture 4 — « Pour ou contre les devoirs ? » (p. 258) : texte argumentatif, repère la thèse et les arguments de chaque camp. Enfin Dictée 7.",
+        exercices:["Rédaction 3 (sujet p. 117)","Lecture 4 — « Pour ou contre les devoirs ? » (p. 258)","Dictée 7 — « Les souvenirs de grand-mère » (p. 100)"],
+        tip:"Pour l'argumentation : thèse → argument → exemple → conclusion. Structure très attendue au brevet.", type:"redac" },
+    ]
+  },
+  {
+    num:8, theme:"Genres littéraires, méthodes, bilan final", color:"#BE185D", light:"#FDF2F8", emoji:"🏆",
+    days:[
+      { label:"Lun 17 août", lecon:"Littérature 3, 4 & 5 : Genres, poésie, théâtre",
+        detail:"Lis p. 77–81 : les grands genres (roman, nouvelle, poésie, théâtre, essai, fable). Poésie : vers, strophe, rime, rythme, coupe. Théâtre : acte, scène, réplique, didascalie, monologue/dialogue.",
+        exercices:["Exercice Vocabulaire n°11 — Champ lexical","Exercice Vocabulaire n°12 — Identifier le champ lexical","Exercice Conjugaison n°30 — Récit à compléter"],
+        tip:"Au brevet, n'importe quel genre peut tomber. Assure-toi de reconnaître les indices de chaque genre.", type:"lecon" },
+      { label:"Mar 18 août", lecon:"Littérature 6 & 7 : Roman/nouvelle et Argumentation",
+        detail:"Lis p. 82–85 : schéma narratif (situation initiale → élément déclencheur → péripéties → dénouement → situation finale), point de vue (interne / externe / omniscient). Argumentation : thèse, argument, exemple, concession.",
+        exercices:["Exercice Vocabulaire n°13 — Niveaux de langue","Exercice Vocabulaire n°14 — Passer au niveau courant","Exercice Orthographe n°15 — Tous les homophones"],
+        tip:"Repère toujours le point de vue du narrateur dans un texte : cela change tout à l'interprétation du récit.", type:"lecon" },
+      { label:"Mer 19 août", lecon:"Méthodes 1 à 6 : Analyser, rédiger, réussir",
+        detail:"Lis attentivement p. 87–92 : méthode d'analyse de texte, de rédaction, de dictée, comment bien répondre aux questions, préparer un contrôle, préparer le brevet. Ces pages sont un condensé de ce que les profs attendent.",
+        exercices:["Exercice Vocabulaire n°15 — Sens propre ou figuré ?","Exercice Vocabulaire n°16 — Expliquer une expression imagée","Exercice Orthographe n°16 — Ponctuer un texte"],
+        tip:"Les méthodes p. 87–92 : mémorise-les. Ce sont exactement les critères de notation de tes profs.", type:"lecon" },
+      { label:"Jeu 20 août", lecon:"Lecture 5 + Rédaction 4 + Dictée 8",
+        detail:"Lis le Texte n°5 — « Pourquoi la mer est salée » (p. 305). Réponds à toutes les questions. Puis Rédaction 4. Enfin Dictée 8 — la dernière de l'été !",
+        exercices:["Rédaction 4 (sujet p. 118)","Lecture 5 — « Pourquoi la mer est salée » (p. 305)","Dictée 8 — « Le grenier oublié » (p. 101)"],
+        tip:"C'est l'avant-dernière séance. Tu as fait un travail énorme cet été. Dernière ligne droite !", type:"lecture" },
+      { label:"Ven 21 août", lecon:"🏆 Grand Contrôle Final (/100)",
+        detail:"Grand Contrôle Final (p. 157–168). Fais-le en conditions d'examen : seul(e), sans aide, chronomètre lancé. Il couvre tout le programme de l'été. Corrige-toi ensuite avec les corrigés.",
+        exercices:["Grand Contrôle Final (/100) — p. 157 à 168","Auto-évaluation de toutes les semaines (étoiles)"],
+        tip:"🌟 Tu as travaillé tout l'été. Ce contrôle final est ta récompense : montre tout ce que tu sais faire !", type:"controle" },
+    ]
+  },
+];
+
+const TYPE = {
+  lecon:   { color:"#16A34A", label:"Leçon + Exercices" },
+  exo:     { color:"#2563EB", label:"Exercices" },
+  dictee:  { color:"#D97706", label:"Dictée" },
+  lecture: { color:"#7C3AED", label:"Lecture + Dictée" },
+  redac:   { color:"#DC2626", label:"Rédaction + Dictée" },
+  repos:   { color:"#0D9488", label:"Journée allégée 🎆" },
+  controle:{ color:"#92400E", label:"Contrôle Final 🏆" },
+};
+
+// State
+let currentWeek = 0;
+let done = JSON.parse(localStorage.getItem('done2k26') || '{}');
+let openDay = null;
+
+function save() { localStorage.setItem('done2k26', JSON.stringify(done)); }
+
+function totalDone() { return Object.values(done).filter(Boolean).length; }
+const TOTAL = WEEKS.reduce((s,w)=>s+w.days.length,0);
+
+function render() {
+  const w = WEEKS[currentWeek];
+  document.documentElement.style.setProperty('--week-color', w.color);
+
+  // Progress
+  const pct = Math.round((totalDone()/TOTAL)*100);
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('progressLabel').textContent = `${totalDone()} / ${TOTAL} journées terminées`;
+
+  // Tabs
+  document.getElementById('tabs').innerHTML = WEEKS.map((wk,i) => {
+    const wd = wk.days.filter((_,j) => done[`${i}-${j}`]).length;
+    return `<button class="tab ${i===currentWeek?'active':''}" style="--week-color:${wk.color}" onclick="goWeek(${i})">
+      <span class="tab-emoji">${wk.emoji}</span>
+      <span class="tab-num">S${wk.num}</span>
+      <span class="tab-progress">${wd}/${wk.days.length}</span>
+    </button>`;
+  }).join('');
+
+  // Banner
+  const banner = document.getElementById('weekBanner');
+  banner.style.background = w.light;
+  banner.style.borderColor = w.color+'33';
+  banner.innerHTML = `<div class="week-eyebrow" style="color:${w.color}">Semaine ${w.num} sur 8</div>
+    <div class="week-title">${w.emoji} ${w.theme}</div>`;
+
+  // Days
+  document.getElementById('daysList').innerHTML = w.days.map((day,j) => {
+    const key = `${currentWeek}-${j}`;
+    const isDone = !!done[key];
+    const isOpen = openDay === j;
+    const t = TYPE[day.type] || TYPE.exo;
+    return `
+    <div class="day-card ${isDone?'done':''} ${isOpen?'open':''}" style="${isOpen?'border-color:'+w.color:''}">
+      <div class="day-header" onclick="toggleDay(${j})">
+        <div class="checkbox ${isDone?'checked':''}" style="${isDone?'background:'+w.color:''}" onclick="event.stopPropagation();toggleDone(${j})">
+          ${isDone?'✓':''}
+        </div>
+        <div class="day-info">
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:3px">
+            <span class="day-badge" style="background:${t.color}">${t.label}</span>
+          </div>
+          <div class="day-label ${isDone?'done-text':''}">${day.label}</div>
+          <div class="day-lecon">${day.lecon}</div>
+        </div>
+        <div class="chevron ${isOpen?'open':''}">▼</div>
+      </div>
+      <div class="day-detail ${isOpen?'open':''}">
+        <div class="detail-section">
+          <div class="detail-label" style="color:${w.color}">📖 Ce que tu fais aujourd'hui</div>
+          <div class="detail-box">${day.detail}</div>
+        </div>
+        <div class="detail-section">
+          <div class="detail-label" style="color:${w.color}">✏️ Exercices à faire</div>
+          <div class="detail-box">
+            ${day.exercices.map(e=>`<div class="exo-row"><span class="exo-arrow">→</span>${e}</div>`).join('')}
+          </div>
+        </div>
+        <div class="tip-box">
+          <span class="tip-icon">💡</span>
+          <span class="tip-text">${day.tip}</span>
+        </div>
+        <button class="done-btn" style="background:${isDone?'#E5E7EB':''+w.color};color:${isDone?'#6B7280':'white'}" onclick="toggleDone(${j})">
+          ${isDone ? '↩ Marquer comme non fait' : '✓ Marquer cette journée comme faite'}
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Nav
+  document.getElementById('btnPrev').disabled = currentWeek === 0;
+  document.getElementById('btnNext').disabled = currentWeek === WEEKS.length-1;
+}
+
+function goWeek(i) {
+  currentWeek = i;
+  openDay = null;
+  render();
+  window.scrollTo({top:0, behavior:'smooth'});
+  // Scroll tab into view
+  setTimeout(()=>{
+    const tabs = document.querySelectorAll('.tab');
+    if(tabs[i]) tabs[i].scrollIntoView({inline:'center', behavior:'smooth'});
+  }, 50);
+}
+
+function changeWeek(d) {
+  const next = currentWeek + d;
+  if(next >= 0 && next < WEEKS.length) goWeek(next);
+}
+
+function toggleDay(j) {
+  openDay = openDay === j ? null : j;
+  render();
+}
+
+function toggleDone(j) {
+  const key = `${currentWeek}-${j}`;
+  done[key] = !done[key];
+  save();
+  render();
+}
+
+// Install banner
+window.addEventListener('load', () => {
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isStandalone = window.navigator.standalone;
+  if(isIOS && !isStandalone) {
+    document.getElementById('installBanner').style.display = 'flex';
+  }
+});
+
+// PWA
+if('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+
+render();
+</script>
+</body>
+</html>
