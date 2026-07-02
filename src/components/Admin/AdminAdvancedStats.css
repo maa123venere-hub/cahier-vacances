@@ -1,0 +1,224 @@
+.admin-advanced-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── KPI grid ────────────────────────────────── */
+.as-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+}
+
+.as-kpi {
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 12px;
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.as-kpi::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--kc, #2563eb);
+  border-radius: 12px 12px 0 0;
+}
+
+.as-kpi__icon { font-size: 1.3rem; }
+
+.as-kpi__val {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--kc, #2563eb);
+  line-height: 1;
+}
+
+.as-kpi__lbl {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary, #111);
+}
+
+.as-kpi__sub {
+  font-size: 0.72rem;
+  color: var(--text-secondary, #888);
+}
+
+/* ── Cards ───────────────────────────────────── */
+.as-card {
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 12px;
+  padding: 18px 16px;
+}
+
+.as-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 680px) {
+  .as-row-2 { grid-template-columns: 1fr; }
+}
+
+/* ── Chart ───────────────────────────────────── */
+.as-chart-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.as-chart-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-secondary, #666);
+  margin-bottom: 14px;
+}
+
+.as-svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  min-width: 300px;
+}
+
+/* ── Horizontal bar ──────────────────────────── */
+.as-hbar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.as-hbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.as-hbar__lbl {
+  width: 72px;
+  font-size: 0.76rem;
+  color: var(--text-secondary, #666);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.as-hbar__track {
+  flex: 1;
+  height: 10px;
+  background: var(--bg-secondary, #f3f4f6);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.as-hbar__fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.4s ease;
+  min-width: 2px;
+}
+
+.as-hbar__val {
+  font-size: 0.76rem;
+  font-weight: 700;
+  width: 52px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ── Table ───────────────────────────────────── */
+.as-table-wrap {
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 12px;
+  padding: 16px;
+  overflow-x: auto;
+}
+
+.as-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.as-table th {
+  text-align: left;
+  padding: 6px 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-secondary, #888);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  border-bottom: 1px solid var(--border-color, #e5e7eb);
+}
+
+.as-table td {
+  padding: 8px 8px;
+  color: var(--text-primary, #111);
+  border-bottom: 1px solid var(--border-color, #f3f4f6);
+}
+
+.as-table tr:last-child td { border-bottom: none; }
+
+.as-day-key {
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: var(--bg-secondary, #f3f4f6);
+  color: var(--text-secondary, #666);
+  padding: 2px 7px;
+  border-radius: 99px;
+}
+
+.as-pct-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 99px;
+}
+
+/* ── Loading / error ─────────────────────────── */
+.as-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 60px 20px;
+  color: var(--text-secondary, #888);
+  font-size: 0.9rem;
+}
+
+.as-spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid var(--border-color, #e5e7eb);
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.as-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  padding: 16px;
+  color: #dc2626;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.as-empty {
+  font-size: 0.82rem;
+  color: var(--text-secondary, #aaa);
+  text-align: center;
+  padding: 12px 0;
+}

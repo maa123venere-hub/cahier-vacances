@@ -1,0 +1,18 @@
+.badges-body { padding: 16px 16px calc(40px + var(--safe-bottom)); }
+
+.badges-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.badge-card {
+  background: var(--surface);
+  border-radius: 14px;
+  border: 1.5px solid var(--border);
+  padding: 16px 12px;
+  text-align: center;
+  transition: opacity 0.2s;
+}
+.badge-card.locked { opacity: 0.4; }
+.badge-emoji { font-size: 34px; margin-bottom: 8px; }
+.badge-title { font-size: 12.5px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.badge-desc { font-size: 10.5px; color: var(--text-muted); line-height: 1.4; }
+
+.badges-progress { font-size: 12px; color: var(--text-muted); text-align: center; margin-bottom: 16px; }
+.badges-progress strong { color: #4338CA; }

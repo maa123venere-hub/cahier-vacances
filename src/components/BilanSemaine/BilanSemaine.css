@@ -1,0 +1,152 @@
+.bilan-wrap {
+  margin-top: 20px;
+  border-radius: 18px;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.bilan-header {
+  padding: 16px 18px 14px;
+  border-bottom: 2px solid;
+}
+
+.bilan-eyebrow {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+
+.bilan-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.bilan-loading,
+.bilan-empty {
+  padding: 24px 18px;
+  font-size: 14px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ── Score block ── */
+.bilan-score-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 22px 18px 18px;
+  border-bottom: 1.5px solid var(--border);
+}
+
+.bilan-emoji { font-size: 36px; }
+
+.bilan-score {
+  font-size: 52px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.bilan-score-label {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.bilan-score-bar-wrap {
+  width: 100%;
+  height: 8px;
+  background: var(--border);
+  border-radius: 99px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.bilan-score-bar {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 1s ease;
+}
+
+.bilan-score-sub {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* ── Par matière ── */
+.bilan-matieres {
+  padding: 16px 18px;
+  border-bottom: 1.5px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bilan-section-title {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.bilan-matiere-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bilan-matiere-name {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text);
+  width: 90px;
+  flex-shrink: 0;
+  text-transform: capitalize;
+}
+
+.bilan-matiere-bar-wrap {
+  flex: 1;
+  height: 7px;
+  background: var(--border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.bilan-matiere-bar {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.8s ease;
+}
+
+.bilan-matiere-pct {
+  font-size: 12px;
+  font-weight: 800;
+  width: 38px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ── Conseils ── */
+.bilan-conseils {
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bilan-conseil-item {
+  background: var(--surface-alt);
+  border-radius: 10px;
+  padding: 10px 13px;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.55;
+  font-weight: 600;
+  border: 1.5px solid var(--border);
+}

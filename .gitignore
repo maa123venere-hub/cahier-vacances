@@ -1,0 +1,22 @@
+node_modules
+dist
+dist-ssr
+.env
+.env.local
+*.local
+.DS_Store
+
+# Android (generated build artifacts only — keep the project source)
+android/app/build
+android/build
+android/.gradle
+android/local.properties
+android/captures
+android/.idea
+
+# iOS (generated build artifacts and CocoaPods — keep the project source)
+ios/App/Pods
+ios/App/App.xcworkspace
+ios/App/build
+ios/.idea
+.firebase/

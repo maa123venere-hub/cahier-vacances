@@ -1,0 +1,18 @@
+{
+  "projects": {
+    "default": "cahier-de-vacance-ae45b"
+  },
+  "targets": {
+    "cahier-de-vacance-ae45b": {
+      "hosting": {
+        "app": [
+          "cahier-de-vacance-ae45b"
+        ],
+        "ete": [
+          "calendrier-2k26-ete"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

@@ -1,0 +1,91 @@
+.repas-body { padding: 16px 16px calc(40px + var(--safe-bottom)); }
+
+.repas-filters { display: flex; gap: 8px; margin-bottom: 14px; }
+.repas-filter-btn {
+  padding: 8px 14px;
+  border-radius: 99px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.repas-filter-btn.active { background: var(--indigo); border-color: var(--indigo); color: white; }
+
+/* ── Recherche de repas ── */
+.repas-search-wrap { position: relative; margin-bottom: 12px; }
+.repas-search {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 40px 12px 14px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 14px;
+  font-family: inherit;
+}
+.repas-search:focus { outline: none; border-color: #4338CA; }
+.repas-search-clear {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: none;
+  background: var(--surface-alt);
+  color: var(--text-muted);
+  font-size: 12px;
+  cursor: pointer;
+}
+.repas-search-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.repas-search-empty { font-size: 13px; color: var(--text-muted); text-align: center; padding: 8px 0 2px; }
+.repas-ai-error {
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  background: #FEF2F2;
+  color: #B91C1C;
+  border: 1px solid #FCA5A5;
+}
+.repas-ai-btn {
+  width: 100%;
+  padding: 13px;
+  border-radius: 12px;
+  border: none;
+  background: #4338CA;
+  color: white;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.repas-ai-btn:disabled { opacity: 0.6; cursor: default; }
+.repas-marmiton-btn {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1.5px solid #F97316;
+  background: #FFF7ED;
+  color: #C2410C;
+  font-size: 13.5px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+}
+.repas-ai-result { margin-bottom: 4px; }
+.repas-ai-banner {
+  padding: 9px 12px;
+  border-radius: 10px 10px 0 0;
+  background: #EEF2FF;
+  border: 1.5px dashed #4338CA;
+  border-bottom: none;
+  color: #4338CA;
+  font-size: 12px;
+  font-weight: 700;
+}

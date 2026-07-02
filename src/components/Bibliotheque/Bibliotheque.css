@@ -1,0 +1,58 @@
+.biblio-body { padding: 16px 16px calc(40px + var(--safe-bottom)); }
+
+.biblio-controls { margin-bottom: 14px; }
+.biblio-search {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  font-size: 13.5px;
+  margin-bottom: 10px;
+  outline: none;
+}
+.biblio-search:focus { border-color: #4338CA; }
+
+.biblio-filters { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.biblio-filters::-webkit-scrollbar { display: none; }
+.biblio-filter-btn {
+  flex-shrink: 0;
+  padding: 7px 13px;
+  border-radius: 99px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.biblio-filter-btn.active { background: var(--indigo); border-color: var(--indigo); color: white; }
+
+.biblio-card {
+  background: var(--surface);
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.biblio-card-head { display: flex; align-items: center; gap: 10px; padding: 13px 14px; cursor: pointer; }
+.biblio-card-info { flex: 1; min-width: 0; }
+.biblio-card-week { font-size: 10.5px; font-weight: 700; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.5px; }
+.biblio-card-title { font-size: 14px; font-weight: 700; color: var(--text); margin-top: 2px; }
+.biblio-card-fav { background: none; border: none; font-size: 18px; cursor: pointer; flex-shrink: 0; }
+
+.biblio-card-detail { border-top: 1px solid var(--border); padding: 14px; display: none; }
+.biblio-card-detail.open { display: block; animation: slideDown 0.2s ease; }
+.biblio-card-actions { display: flex; gap: 8px; margin-top: 10px; }
+.biblio-pdf-btn {
+  flex: 1;
+  padding: 9px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: var(--surface-alt);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.biblio-empty { text-align: center; color: var(--text-faint); font-size: 13px; padding: 30px; }

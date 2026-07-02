@@ -1,0 +1,168 @@
+.planning-body { padding: 16px 16px calc(40px + var(--safe-bottom)); }
+
+.planning-days {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  margin-bottom: 16px;
+  padding-bottom: 2px;
+}
+.planning-days::-webkit-scrollbar { display: none; }
+.planning-day-tab {
+  flex-shrink: 0;
+  padding: 8px 14px;
+  border-radius: 99px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.planning-day-tab.active { background: var(--indigo); border-color: var(--indigo); color: white; }
+
+.slot-card {
+  background: var(--surface);
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+  transition: opacity 0.2s;
+}
+.slot-card.done { opacity: 0.6; }
+.slot-emoji { font-size: 22px; flex-shrink: 0; }
+.slot-content { flex: 1; min-width: 0; }
+.slot-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-faint); margin-bottom: 4px; }
+.slot-input {
+  width: 100%;
+  border: none;
+  background: none;
+  font-size: 14px;
+  color: var(--text);
+  font-weight: 600;
+  outline: none;
+  padding: 0;
+}
+.slot-input.done-text { text-decoration: line-through; color: var(--text-faint); }
+
+/* ── Générateur « Ma journée idéale » ── */
+.pai-wrap { margin-bottom: 16px; }
+.pai-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 13px 15px;
+  border-radius: 14px;
+  border: 1.5px dashed #4338CA;
+  background: #EEF2FF;
+  cursor: pointer;
+  text-align: left;
+}
+.pai-toggle-icon { font-size: 22px; }
+.pai-toggle-text { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.pai-toggle-title { font-size: 14px; font-weight: 800; color: #4338CA; }
+.pai-toggle-sub { font-size: 11.5px; color: #6D28D9; opacity: 0.8; }
+.pai-chevron { font-size: 11px; color: #4338CA; transition: transform 0.2s ease; }
+.pai-chevron.open { transform: rotate(180deg); }
+
+.pai-panel {
+  margin-top: 10px;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+}
+.pai-label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.pai-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  background: var(--surface-alt);
+  color: var(--text);
+  font-size: 13.5px;
+  font-family: inherit;
+  line-height: 1.5;
+  resize: vertical;
+}
+.pai-textarea:focus { outline: none; border-color: #4338CA; }
+.pai-times { display: flex; gap: 10px; margin: 10px 0; }
+.pai-time {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text);
+}
+.pai-time input {
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+}
+.pai-status { padding: 9px 12px; border-radius: 10px; font-size: 12.5px; font-weight: 600; margin-bottom: 10px; }
+.pai-status-ok { background: #F0FDF4; color: #15803D; border: 1px solid #86EFAC; }
+.pai-status-warn { background: #FFFBEB; color: #B45309; border: 1px solid #FCD34D; }
+.pai-status-err { background: #FEF2F2; color: #B91C1C; border: 1px solid #FCA5A5; }
+.pai-generate {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  background: #4338CA;
+  color: white;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.pai-generate:disabled { opacity: 0.6; cursor: default; }
+
+/* ── Planning personnalisé ── */
+.pai-custom-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 4px 2px 10px;
+}
+.pai-custom-title { font-size: 13.5px; font-weight: 800; color: var(--text); }
+.pai-reset {
+  padding: 6px 12px;
+  border-radius: 99px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.slot-time {
+  font-size: 12px;
+  font-weight: 800;
+  color: #4338CA;
+  background: #EEF2FF;
+  padding: 3px 8px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}

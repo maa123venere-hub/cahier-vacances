@@ -1,0 +1,180 @@
+/* ── Preview steps (before starting) ── */
+.flow-preview-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 16px;
+  padding: 14px 12px;
+  background: var(--surface-alt);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+}
+.flow-preview-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  flex: 1;
+  position: relative;
+}
+.flow-preview-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 14px;
+  right: -50%;
+  width: 100%;
+  height: 2px;
+  background: var(--border);
+}
+.flow-preview-num {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--border);
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+.flow-preview-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ── Active step bar ── */
+.step-bar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  margin-bottom: 18px;
+  position: relative;
+}
+.step-bar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  flex: 1;
+  position: relative;
+  cursor: pointer;
+}
+.step-connector {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  width: 100%;
+  height: 2.5px;
+  background: var(--border);
+  z-index: 0;
+}
+.step-connector.done { background: #16A34A; }
+
+.step-circle {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 2.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  transition: all 0.2s;
+}
+.step-circle.active {
+  color: white;
+  box-shadow: 0 2px 8px rgba(67,56,202,0.3);
+}
+.step-circle.done {
+  color: white;
+}
+.step-circle.locked {
+  opacity: 0.4;
+}
+
+.step-label {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-align: center;
+}
+.step-label.active { color: var(--indigo, #4338CA); font-weight: 800; }
+.step-label.done { color: #16A34A; }
+.step-label.locked { opacity: 0.4; }
+
+/* ── Buttons ── */
+.flow-start-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  color: white;
+  font-weight: 800;
+  font-size: 15px;
+  cursor: pointer;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: opacity 0.2s;
+}
+.flow-start-btn:active { opacity: 0.85; }
+
+.flow-next-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 4px;
+  margin-bottom: 14px;
+  transition: opacity 0.2s;
+}
+
+.flow-instruction {
+  background: #EEF2FF;
+  border: 1.5px solid #C7D2FE;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: #3730A3;
+  font-weight: 600;
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+.flow-complete-banner {
+  background: #ECFDF5;
+  border: 1.5px solid #A7F3D0;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: #047857;
+  font-weight: 700;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.flow-interactive-done {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 24px;
+  text-align: center;
+}
+.flow-interactive-done-icon { font-size: 40px; }
+.flow-interactive-done-text { font-size: 15px; font-weight: 700; color: var(--text-muted); }
