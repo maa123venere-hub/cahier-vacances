@@ -2,6 +2,7 @@
 // Programme complet : 8 semaines × 5 jours. Types : qcm | vrai_faux | completer.
 import { assembleWeeks } from './shared.js';
 import { buildMathsJours, buildMathsSemaines } from './seedBuilder.js';
+import { DRILLS } from './drills6.js';
 
 const weekDefs = [
   // ── S1 — Nombres entiers et décimaux ──────────────────────────
@@ -362,6 +363,11 @@ export const curriculum = {
     { id: 'm6-7-4-4', type: 'vrai_faux', question: '20 % de 200 = 40.', answer: 'vrai', explanation: '10 % de 200 = 20, donc 20 % = 40.', hint: '10 % de 200 = 20.' },
   ]},
 };
+
+// Exercices d'entraînement générés (objectif : 10 à 15 questions par jour)
+for (const [k, extra] of Object.entries(DRILLS)) {
+  if (curriculum[k]) curriculum[k].exercises.push(...extra);
+}
 
 export const meta = {
   id: '6eme',

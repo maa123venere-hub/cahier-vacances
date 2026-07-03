@@ -586,7 +586,7 @@ const JOURS_3EME = [
     tip: 'Dernière relecture en 3 temps : d\'abord le sens (est-ce que ça se lit bien ?), puis les accords (groupe nominal + sujet-verbe + participes), enfin la ponctuation (chaque phrase a un point, les guillemets sont fermés). 10 minutes bien utilisées peuvent faire gagner plusieurs points.',
     lessonPage: 84, exercisesPage: 85, pdfFile: '/cahier-3eme.pdf',
     exercices: [
-      {id:'7-0-1',type:'qcm',question:'(Type brevet) Dans un texte, la phrase « Les mains du temps nous façonnent » contient :',options:['Une comparaison','Une métaphore','Une personnification','Une métonymie'],answer:'Personnification',explanation:'« Le temps » est personnifié : il a des « mains » et il « façonne » (verbe humain). Une métaphore comparerait le temps à quelque chose. Une comparaison utiliserait « comme ».',hint:'Ici, le temps a des mains et agit comme un être humain (il façonne).',method:'Pour identifier une figure de style : 1) Y a-t-il un outil de comparaison (comme, tel) ? → Comparaison. 2) Y a-t-il une image sans outil ? → Métaphore. 3) Un objet a-t-il un caractère humain ? → Personnification.'},
+      {id:'7-0-1',type:'qcm',question:'(Type brevet) Dans un texte, la phrase « Les mains du temps nous façonnent » contient :',options:['Une comparaison','Une métaphore','Une personnification','Une métonymie'],answer:'Une personnification',explanation:'« Le temps » est personnifié : il a des « mains » et il « façonne » (verbe humain). Une métaphore comparerait le temps à quelque chose. Une comparaison utiliserait « comme ».',hint:'Ici, le temps a des mains et agit comme un être humain (il façonne).',method:'Pour identifier une figure de style : 1) Y a-t-il un outil de comparaison (comme, tel) ? → Comparaison. 2) Y a-t-il une image sans outil ? → Métaphore. 3) Un objet a-t-il un caractère humain ? → Personnification.'},
       {id:'7-0-2',type:'qcm',question:'(Type brevet) « Bien qu\'il soit épuisé, il continua sa route. » La subordonnée est :',options:['Circonstancielle de cause','Circonstancielle de concession','Circonstancielle de but','Conjonctive complétive'],answer:'Circonstancielle de concession',explanation:'« Bien que » introduit une subordonnée de concession/opposition. Elle marque un obstacle qui aurait pu empêcher l\'action mais ne l\'a pas empêché. Elle impose le subjonctif (soit).',hint:'La concession = malgré un obstacle, l\'action a quand même lieu.'},
       {id:'7-0-3',type:'qcm',question:'(Type brevet — dictée) Lequel est correct ?',options:['Ils ce sont disputés','Ils se sont disputés','Ils se sons disputés','Ils ce sons disputés'],answer:'Ils se sont disputés',explanation:'Verbe pronominal : se + auxiliaire être → « ils se sont disputés ». Accord du participe passé avec le sujet (ils = masc. plur. → disputés). « ce » est un pronom/déterminant démonstratif, pas la forme réfléchie.',hint:'Pour les verbes pronominaux : se/s\' + être. Pas « ce ».'},
       {id:'7-0-4',type:'vrai_faux',question:'(Type brevet) Un texte argumentatif peut parfaitement utiliser des exemples tirés de la littérature ou du cinéma.',answer:'vrai',explanation:'Les exemples dans une rédaction argumentée peuvent venir de la littérature, du cinéma, de l\'actualité, de l\'histoire ou de l\'expérience personnelle. La variété des exemples enrichit la démonstration.',hint:'L\'exemple sert à illustrer un argument. Sa source peut être diverse.'},
@@ -657,6 +657,12 @@ const JOURS_3EME = [
     ]
   },
 ];
+
+import { EXTRA_3EME } from './extra3.js';
+// Exercices supplémentaires générés pour les jours Français & Maths
+JOURS_3EME.forEach((j) => {
+  if (EXTRA_3EME[j.id]) j.exercices.push(...EXTRA_3EME[j.id]);
+});
 
 export function buildSeedJours()    { return JOURS_3EME; }
 export function buildSeedSemaines() { return SEMAINES_3EME; }

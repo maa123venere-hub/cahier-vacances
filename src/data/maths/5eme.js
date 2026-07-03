@@ -2,6 +2,7 @@
 // Programme complet : 8 semaines × 5 jours. Types : qcm | vrai_faux | completer.
 import { assembleWeeks } from './shared.js';
 import { buildMathsJours, buildMathsSemaines } from './seedBuilder.js';
+import { DRILLS } from './drills5.js';
 
 const weekDefs = [
   // ── S1 — Nombres relatifs ──────────────────────────────────────
@@ -362,6 +363,11 @@ export const curriculum = {
     { id: 'm5-7-4-4', type: 'vrai_faux', question: 'La somme des angles d\'un triangle est 180°.', answer: 'vrai', explanation: 'Vrai pour tout triangle.', hint: 'Propriété fondamentale.' },
   ]},
 };
+
+// Exercices d'entraînement générés (objectif : 10 à 15 questions par jour)
+for (const [k, extra] of Object.entries(DRILLS)) {
+  if (curriculum[k]) curriculum[k].exercises.push(...extra);
+}
 
 export const meta = {
   id: '5eme',

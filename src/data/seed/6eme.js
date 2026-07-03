@@ -651,6 +651,12 @@ const JOURS_6EME = [
   },
 ];
 
+import { EXTRA_6EME } from './extra6.js';
+// Exercices supplémentaires générés pour les jours Français & Maths
+JOURS_6EME.forEach((j) => {
+  if (EXTRA_6EME[j.id]) j.exercices.push(...EXTRA_6EME[j.id]);
+});
+
 export function buildSeedJours() {
   return JOURS_6EME;
 }

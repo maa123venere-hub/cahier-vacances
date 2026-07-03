@@ -1416,6 +1416,12 @@ export const CURRICULUM = {
   },
 };
 
+import { CURRICULUM_EXTRA } from './curriculumExtra.js';
+// Exercices supplémentaires générés (objectif : 10 à 15 questions par jour)
+for (const [k, extra] of Object.entries(CURRICULUM_EXTRA)) {
+  if (CURRICULUM[k]) CURRICULUM[k].exercises.push(...extra);
+}
+
 // Fonction utilitaire pour récupérer les exercices d'une journée
 export function getExercises(dayKey) {
   return CURRICULUM[dayKey]?.exercises || [];

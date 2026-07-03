@@ -3,6 +3,7 @@
 // Semaines 7 et 8 : brevets blancs (le panneau BrevetBlanc s'affiche une fois la semaine terminée).
 import { assembleWeeks } from './shared.js';
 import { buildMathsJours, buildMathsSemaines } from './seedBuilder.js';
+import { DRILLS } from './drills3.js';
 
 const weekDefs = [
   // ── S1 — Calcul littéral et identités remarquables ─────────────
@@ -364,6 +365,11 @@ export const curriculum = {
     { id: 'm3-7-4-5', type: 'vrai_faux', question: 'Le PGCD de 15 et 25 est 5.', answer: 'vrai', explanation: '15 = 3×5, 25 = 5². Facteur commun : 5.', hint: 'Facteur commun 5.' },
   ]},
 };
+
+// Exercices d'entraînement générés (objectif : 10 à 15 questions par jour)
+for (const [k, extra] of Object.entries(DRILLS)) {
+  if (curriculum[k]) curriculum[k].exercises.push(...extra);
+}
 
 export const meta = {
   id: '3eme',

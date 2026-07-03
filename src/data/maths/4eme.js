@@ -2,6 +2,7 @@
 // Programme complet : 8 semaines × 5 jours. Types : qcm | vrai_faux | completer.
 import { assembleWeeks } from './shared.js';
 import { buildMathsJours, buildMathsSemaines } from './seedBuilder.js';
+import { DRILLS } from './drills4.js';
 
 const weekDefs = [
   // ── S1 — Calculs sur les nombres relatifs ──────────────────────
@@ -362,6 +363,11 @@ export const curriculum = {
     { id: 'm4-7-4-4', type: 'vrai_faux', question: 'On a 10³ = 1000.', answer: 'vrai', explanation: '10³ = 1 suivi de 3 zéros = 1000.', hint: '3 zéros.' },
   ]},
 };
+
+// Exercices d'entraînement générés (objectif : 10 à 15 questions par jour)
+for (const [k, extra] of Object.entries(DRILLS)) {
+  if (curriculum[k]) curriculum[k].exercises.push(...extra);
+}
 
 export const meta = {
   id: '4eme',
