@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PROJECT_DIR:-/Users/maxwellve/Desktop/Claude code/cahier-vacances 2k26}/scripts/autosave.sh\"",
+            "timeout": 120,
+            "statusMessage": "Sauvegarde automatique…"
+          }
+        ]
+      }
+    ]
+  }
+}
