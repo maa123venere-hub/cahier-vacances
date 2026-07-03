@@ -3,6 +3,7 @@
 // Semaines 7 et 8 : brevets blancs (le panneau BrevetBlanc s'affiche une fois la semaine terminée).
 import { assembleWeeks } from './shared.js';
 import { buildMathsJours, buildMathsSemaines } from './seedBuilder.js';
+import { MATHS_PDF_PAGES } from './pdfPages.js';
 import { DRILLS } from './drills3.js';
 
 const weekDefs = [
@@ -375,12 +376,12 @@ export const meta = {
   id: '3eme',
   title: 'Mathématiques 3e',
   description: 'Maths — Révisions Été 2026 (préparation brevet)',
-  pdfFile: null,
+  pdfFile: '/cahier-maths-3eme.pdf',
   totalWeeks: 8,
   totalDays: 40,
 };
 
-export function buildSeedJours() { return buildMathsJours(weeks, curriculum, meta.pdfFile); }
+export function buildSeedJours() { return buildMathsJours(weeks, curriculum, meta.pdfFile, MATHS_PDF_PAGES['3eme']); }
 export function buildSeedSemaines() { return buildMathsSemaines(weeks); }
 
 export default { meta, weeks, curriculum };

@@ -2,7 +2,7 @@
 // Transforms a level's { weeks, curriculum } into the unified jours/semaines
 // documents consumed by useContenus → buildLegacyShapes (same shape as Français seed).
 
-export function buildMathsJours(weeks, curriculum, pdfFile = null) {
+export function buildMathsJours(weeks, curriculum, pdfFile = null, pagesMap = {}) {
   const jours = [];
   let ordre = 0;
 
@@ -29,8 +29,8 @@ export function buildMathsJours(weeks, curriculum, pdfFile = null) {
         tip: day.tip || '',
         difficulte: Math.min(5, Math.ceil(week.num / 2)),
 
-        lessonPage: null,
-        exercisesPage: null,
+        lessonPage: pagesMap[id]?.lesson ?? null,
+        exercisesPage: pagesMap[id]?.exercises ?? null,
         pdfFile,
 
         exercices: cur.exercises || [],

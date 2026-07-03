@@ -2,6 +2,7 @@
 // Programme complet : 8 semaines × 5 jours. Types : qcm | vrai_faux | completer.
 import { assembleWeeks } from './shared.js';
 import { buildMathsJours, buildMathsSemaines } from './seedBuilder.js';
+import { MATHS_PDF_PAGES } from './pdfPages.js';
 import { DRILLS } from './drills5.js';
 
 const weekDefs = [
@@ -373,12 +374,12 @@ export const meta = {
   id: '5eme',
   title: 'Mathématiques 5e',
   description: 'Maths — Révisions Été 2026 (2e année de collège)',
-  pdfFile: null,
+  pdfFile: '/cahier-maths-5eme.pdf',
   totalWeeks: 8,
   totalDays: 40,
 };
 
-export function buildSeedJours() { return buildMathsJours(weeks, curriculum, meta.pdfFile); }
+export function buildSeedJours() { return buildMathsJours(weeks, curriculum, meta.pdfFile, MATHS_PDF_PAGES['5eme']); }
 export function buildSeedSemaines() { return buildMathsSemaines(weeks); }
 
 export default { meta, weeks, curriculum };
